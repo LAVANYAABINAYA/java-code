@@ -1,0 +1,34 @@
+class Solution {
+    public int divide(int dividend, int divisor) {
+        // Special Case: Overflow (INT_MIN / -1 = 2^31, which is > INT_MAX)
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+
+        // Determine the final sign of the result
+        // Use XOR: negative if signs are different
+        boolean isNegative = (dividend < 0) ^ (divisor < 0);
+
+        // Work with negative numbers to avoid overflow when using abs() 
+        // (since |INT_MIN| > INT_MAX)
+        long dvd = Math.abs((long) dividend);
+        long dvs = Math.abs((long) divisor);
+
+        int result = 0;
+        while (dvd >= dvs) {
+            long tempDivisor = dvs, multiple = 1;
+            
+            // Double the divisor as long as it's smaller than the remaining dividend
+            while (dvd >= (tempDivisor << 1)) {
+                tempDivisor <<= 1;
+                multiple <<= 1;
+            }
+            
+            // Subtract the largest power-of-2 chunk and add to result
+            dvd -= tempDivisor;
+            result += multiple;
+        }
+
+        return isNegative ? -result : result;
+    }
+}
