@@ -1,0 +1,14 @@
+class Solution {
+    public boolean isPowerOfFour(int n) {
+        // Step 1: Power of four must be positive
+        if (n <= 0) return false;
+
+        // Step 2: Keep dividing by 4 while the remainder is 0
+        while (n % 4 == 0) {
+            n = n / 4;
+        }
+
+        // Step 3: If we reach 1, it's a power of four
+        return n == 1;
+    }
+}
