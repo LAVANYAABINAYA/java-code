@@ -1,0 +1,29 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        // Standard backtracking function
+        backtrack(result, new ArrayList<>(), candidates, target, 0);
+        return result;
+    }
+
+    private void backtrack(List<List<Integer>> result, List<Integer> tempList, 
+                           int[] candidates, int remain, int start) {
+        if (remain < 0) return; // Base Case: exceeded target, stop exploring
+        else if (remain == 0) {
+            // Base Case: found a valid combination, add a copy to results
+            result.add(new ArrayList<>(tempList));
+        } else {
+            for (int i = start; i < candidates.length; i++) {
+                tempList.add(candidates[i]); // Choose the candidate
+                
+                // Explore: Stay at 'i' because we can reuse the same element
+                backtrack(result, tempList, candidates, remain - candidates[i], i);
+                
+                tempList.remove(tempList.size() - 1); // Un-choose (Backtrack)
+            }
+        }
+    }
+}
