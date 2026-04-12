@@ -1,0 +1,35 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        // Use a boolean array to keep track of used elements (O(1) lookup)
+        backtrack(result, new ArrayList<>(), nums, new boolean[nums.length]);
+        return result;
+    }
+
+    private void backtrack(List<List<Integer>> result, List<Integer> tempList, int[] nums, boolean[] used) {
+        // Base case: if the current list size matches nums.length, we found a permutation
+        if (tempList.size() == nums.length) {
+            result.add(new ArrayList<>(tempList));
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            // Skip if the element is already in the current permutation
+            if (used[i]) continue;
+
+            // 1. Choose the element
+            used[i] = true;
+            tempList.add(nums[i]);
+
+            // 2. Explore further (Recursion)
+            backtrack(result, tempList, nums, used);
+
+            // 3. Un-choose (Backtrack) for the next iteration
+            used[i] = false;
+            tempList.remove(tempList.size() - 1);
+        }
+    }
+}
